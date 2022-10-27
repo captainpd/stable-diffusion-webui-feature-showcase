@@ -14,7 +14,7 @@ Outpainting 会延展初始图片，并修补空白的区域.
 
 原始图片由4chan上的匿名用户提供. 谢谢你，匿名用户.
 
-**使用方式**：img2img——底部——Poor man's outpainting
+**使用方式**：img2img —> 底部 —> Poor man's outpainting
 
 扩展画幅不像不同的图形生成一样需要大量的步长。比较好的办法是先使用一个符合原始图片的Prompt。将Denoising和FCG scale调整到最大, steps调整为50-100，sampler选择euler ancestral 或者 DPM2 ancestral。
 
@@ -23,7 +23,7 @@ Outpainting 会延展初始图片，并修补空白的区域.
 | ![](images/inpainting-81-euler-a.png) | ![](images/inpainting-30-euler-a.png) | ![](images/inpainting-10-euler-a.png) | ![](images/inpainting-80-dpm2-a.png) |
 
 ### 图片修补
-**使用方式**：img2img——inpainting——用画笔画出想要修复的区域.
+**使用方式**：img2img —> inpainting -> 用画笔画出想要修复的区域.
 
 ![](images/inpainting.png)
 
@@ -63,44 +63,43 @@ Outpainting 会延展初始图片，并修补空白的区域.
 
 
 ### Prompt 矩阵
-Separate multiple prompts using the `|` character, and the system will produce an image for every combination of them.
-For example, if you use `a busy city street in a modern city|illustration|cinematic lighting` prompt, there are four combinations possible (first part of prompt is always kept):
+**使用方式**：Script -> Prompt Matrix
+将多个prompts使用`|`分隔开，系统将会产生一个逐个组合起prompt的图片.
+举例来说，如果你使用 `a busy city street in a modern city|illustration|cinematic lighting` prompt，将会有四种可能的组合（第一个prompt将一直会被保留着）。
+
 
 - `a busy city street in a modern city`
 - `a busy city street in a modern city, illustration`
 - `a busy city street in a modern city, cinematic lighting`
 - `a busy city street in a modern city, illustration, cinematic lighting`
 
-Four images will be produced, in this order, all with same seed and each with corresponding prompt:
+四个图片都会被按照上述顺序产生出来，他们都共享一样的种子值分别对应如下的prompt:
 ![](images/prompt-matrix.png)
 
-Another example, this time with 5 prompts and 16 variations:
+另外一个例子如下, 这次我们有5个prompts和16个变种:
 ![](images/prompt_matrix.jpg)
 
-You can find the feature at the bottom, under Script -> Prompt matrix.
 
-### Stable Diffusion upscale
-Upscale image using RealESRGAN/ESRGAN and then go through tiles of the result, improving them with img2img.
-Also has an let you do the upscaling part yourself in external program, and just go through tiles with img2img.
+### Stable Diffusion 向上缩放（放大）
 
-Original idea by: https://github.com/jquesnelle/txt2imghd. This is an independent implementation.
+放大模块使用RealESRGAN/ESRGAN遍历每一小块tile，使用img2img来优化它们。
+你可以在其他项目中手动使用img2img处理每一小块tile达到一样的效果。
 
-To use this feature, tick a checkbox in the img2img interface. Input image will be upscaled to twice the original
-width and height, and UI's width and height sliders specify the size of individual tiles. Because of overlap,
-the size of tile can be very important: 512x512 image needs nine 512x512 tiles (because of overlap), but only
-four 640x640 tiles.
+原始想法来自这里: https://github.com/jquesnelle/txt2imghd. 这是一个独立的实现内容。
 
-Rcommended parameters for upscaling:
+**使用方式**：Extras ->选择 UpScaler -> 定义每个tile的大小。
+
+推荐的参数：
  - Sampling method: Euler a
  - Denoising strength: 0.2, can go up to 0.4 if you feel adventureous
 
-| Original                                  | RealESRGAN                                  | Topaz Gigapixel                                         | SD upscale                                  |
+| 原始图片                                  | RealESRGAN                                  | Topaz Gigapixel                                         | SD upscale                                  |
 |-------------------------------------------|---------------------------------------------|---------------------------------------------------------|---------------------------------------------|
 | ![](images/sd-upscale-robot-original.png) | ![](images/sd-upscale-robot-realesrgan.png) | ![](images/sd-upscale-robot-esrgan-topaz-gigapixel.png) | ![](images/sd-upscale-robot-sd-upscale.png) |
 | ![](images/sd-upscale-castle-original.png) | ![](images/sd-upscale-castle-realesrgan.png) | ![](images/sd-upscale-castle-esrgan-topaz-gigapixel.png) | ![](images/sd-upscale-castle-sd-upscale.png) |
 | ![](images/sd-upscale-city-original.png)  | ![](images/sd-upscale-city-realesrgan.png)  | ![](images/sd-upscale-city-esrgan-topaz-gigapixel.png)  | ![](images/sd-upscale-city-sd-upscale.png)  |
 
-### Attention
+### 注意力
 Using `()` in prompt increases model's attention to enclosed words, and `[]` decreases it. You can combine
 multiple modifiers:
 
