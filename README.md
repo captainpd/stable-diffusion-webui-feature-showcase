@@ -1,72 +1,68 @@
-# Stable Diffusion web UI
-This is a feature showcase page for [Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
+# Stable Diffusion web UI 中文
+这是一个针对[Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui)的特性介绍页面。
+文档中所有提到的例子都不是举特例，除了那些特别提到的例子.
 
-All examples are non-cherrypicked unless specified otherwise.
+### Outpainting 扩展画幅
 
-### Outpainting
+Outpainting 会延展初始图片，并修补空白的区域.
 
-Outpainting extends original image and inpaints  created empty space.
+案例:
 
-Example:
-
-| Original                     | Oupainting                   | Outpainting again            |
+| 原始图片                      | 扩展一次                     | 再次扩展           |
 |------------------------------|------------------------------|------------------------------|
 | ![](images/outpainting-1.png) | ![](images/outpainting-2.png) | ![](images/outpainting-3.png) |
 
-Original image by Anonymous user from 4chan. Thank you, Anonymous user.
+原始图片由4chan上的匿名用户提供. 谢谢你，匿名用户.
 
-You can find the feature in the img2img tab at the bottom, under Script -> Poor man's outpainting.
+**使用方式**：img2img——底部——Poor man's outpainting
 
-Outpainting, unlike normal image generation, seems to profit very much from large step count. A recipe for a good outpainting
-is a good prompt that matches the picture, sliders for denoising and FCG scale set to max, and step count of 50 to 100 with
-euler ancestral or DPM2 ancestral samplers.
+扩展画幅不像不同的图形生成一样需要大量的步长。比较好的办法是先使用一个符合原始图片的Prompt。将Denoising和FCG scale调整到最大, steps调整为50-100，sampler选择euler ancestral 或者 DPM2 ancestral。
 
 | 81 steps, Euler A                   | 30 steps, Euler A                     | 10 steps, Euler A                    | 80 steps, Euler A                   |
 |-------------------------------------|---------------------------------------|--------------------------------------|-------------------------------------|
 | ![](images/inpainting-81-euler-a.png) | ![](images/inpainting-30-euler-a.png) | ![](images/inpainting-10-euler-a.png) | ![](images/inpainting-80-dpm2-a.png) |
 
-### Inpainting
-In img2img tab, draw a mask over a part of image, and that part will be in-painted.
+### 图片修补
+**使用方式**：img2img——inpainting——用画笔画出想要修复的区域.
 
 ![](images/inpainting.png)
 
-Options for inpainting:
-- draw a mask yourself in web editor
-- erase a part of picture in external editor and upload a transparent picture. Any even slightly transparent areas will become part of the mask. Be aware that [some editors](https://docs.krita.org/en/reference_manual/layers_and_masks/split_alpha.html#how-to-save-a-png-texture-and-keep-color-values-in-fully-transparent-areas) save completely transparent areas as black by default.
-- change mode (to the bottom right of the picture) to "Upload mask" and choose a separate black and while image for mask (white=inpaint).
+修补图片的选项:
+- 在网页编辑器中手绘。
+- 在网页编辑器中擦除一部分图片并上传一张有透明度的图片.任何哪怕只有一点点透明的部分都会变成蒙版的一部分. 注意 [有一些网页编辑器](https://docs.krita.org/en/reference_manual/layers_and_masks/split_alpha.html#how-to-save-a-png-texture-and-keep-color-values-in-fully-transparent-areas)会默认把完全透明的部分作为黑色保存下来.
+- 选择模式 (在图片下方) 选择"Upload mask" 并选择一个新的黑白图片作为蒙版(白色=修补区域).
 
-##### Masked content
-Masked content field determines content is placed to put into the masked regions before thet are inpainted.
+##### 蒙版内容
+蒙版内容类型会决定将要被修复的蒙版区域将要有什么内容替代。
 
 | mask                                            | fill                                            | original                                            | latent noise                                            | latent nothing                                            |
 |-------------------------------------------------|-------------------------------------------------|-----------------------------------------------------|---------------------------------------------------------|-----------------------------------------------------------|
 | ![](images/inpainting-initial-content-mask.png) | ![](images/inpainting-initial-content-fill.png) | ![](images/inpainting-initial-content-original.png) | ![](images/inpainting-initial-content-latent-noise.png) | ![](images/inpainting-initial-content-latent-nothing.png) |
 
-##### Inpaint at full resolution
-Normally, inpaiting resizes the image to target resolution specified in the UI. With Inpaint at full resolution
-enabled, only the masked region is resized, and after processing it is pasted back to the original picture.
-This allows you to work with large pictures, and allows to render the inpained object at a much larger resolution.
+##### 以完整分辨率修补图片
+正常来说，修补图片的时候整个图片会被缩放为UI中所选择的最终尺寸。选择full resolution将会只缩放被蒙版选中的区域，并在处理完以后粘贴回原始图片
+这将时你能修补很大幅的图片，并且可以让被修补的部分以大得多的分辨率被渲染出来。
 
 
-| Input                               | Inpaint normal                   | Inpaint at whole resolution       |
+| 输入图片                               |修补-普通                   | 修补-完整分辨率 
 |-------------------------------------|----------------------------------|-----------------------------------|
 | ![](images/inpaint-whole-mask.png)  | ![](images/inpaint-whole-no.png) | ![](images/inpaint-whole-yes.png) |
 
 
 
-##### Masking mode
-There are two options for masked mode:
-- Inpaint masked - the region under the mask is inpainted
-- Inpaint not masked - under the mask is unchanged, everything else is inpainted
+##### 蒙版模式
+蒙版现在有两个模式:
+- Inpaint masked - 只修补蒙版**内部**的图片
+- Inpaint not masked -只修改蒙版**外部**的图片
 
-##### Alpha mask
+##### 透明度蒙版
 
-| Input                        | Output                        |
+| 输入                        | 输出                        |
 |------------------------------|-------------------------------|
 | ![](images/inpaint-mask.png) | ![](images/inpaint-mask2.png) |
 
 
-### Prompt matrix
+### Prompt 矩阵
 Separate multiple prompts using the `|` character, and the system will produce an image for every combination of them.
 For example, if you use `a busy city street in a modern city|illustration|cinematic lighting` prompt, there are four combinations possible (first part of prompt is always kept):
 
