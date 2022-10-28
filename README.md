@@ -119,9 +119,8 @@ Outpainting 会延展初始图片，并修补空白的区域.
 原始图片由4chan上的匿名用户提供. 谢谢你，匿名用户.
 
 ### X/Y plot
-Creates a grid of images with varying parameters. Select which parameters should be shared by rows and columns using
-X type and Y type fields, and input those parameters separated by comma into X values/Y values fields. For integer,
-and floating ponit numbers, ranges are supported. Examples:
+
+通过变化的参数创建出一个图片的网格。通过选择X与Y中的类型，我们可以选择哪一些参数会被行和列所共享，我们也可以通过逗号分割把参数输入x/y的区域。在使用整数，浮点数时，支持使用范围，例子如下：
 
 - `1-5` = 1, 2, 3, 4, 5
 - `1-5 (+2)` = 1, 3, 5
@@ -130,43 +129,40 @@ and floating ponit numbers, ranges are supported. Examples:
 
 ![](images/xy_grid-medusa.png)
 
-Here's are settings that create the graph above:
+这里显示的就是使用上述设置产出的图片:
 
 ![](images/xy_grid-medusa-ui.png)
 
 ### Textual Inversion
-Allows you to use pretrained textual inversion embeddings.
-See original site for details: https://textual-inversion.github.io/.
-I used lstein's repo for training embdedding: https://github.com/lstein/stable-diffusion; if
-you want to train your own, I recommend following the guide on his site.
+这个功能将让你能够使用预训练的textual inversion embeddings。
+在原始网站上查看细节: https://textual-inversion.github.io/.
+我使用了lstein的仓库来训练embedding: https://github.com/lstein/stable-diffusion; if
+如果你想要训练自己的embedding,我推荐你在他的网站跟随下述指导.
 
-To make use of pretrained embeddings, create `embeddings` directory in the root dir of Stable
-Diffusion and put your embeddings into it. They must be .pt files about 5Kb in size, each with only
-one trained embedding, and the filename (without .pt) will be the term you'd use in prompt
-to get that embedding.
+如果想要使用预训练好的embeddings，在Stable Diffusion文件夹的根目录下创建`embeddings`文件夹，并且把embedding文件放进去。
+他们必须是.pt文件，大小在5kb左右，每一个文件只包含一种embedding，文件名将会用来作为prompt中使用的提示词.
 
-As an example, I trained one for about 5000 steps: https://files.catbox.moe/e2ui6r.pt; it does
-not produce very good results, but it does work. Download and rename it to `Usada Pekora.pt`,
-and put it into `embeddings` dir and use Usada Pekora in prompt.
+举例来说，我花费了5000步训练了一个embedding: https://files.catbox.moe/e2ui6r.pt; 它没有产生特别好的效果，但是可以看出它起作用了.
+把它下载下来并且重命名为`Usada Pekora.pt`,并且把它放到`embeddings` 文件夹即可在prompt中使用Usada Pekora作为关键词.
 
 ![](images/inversion.png)
 
-### Resizing
-There are three options for resizing input images in img2img mode:
+### 调整大小
+我们在img2img模式下有三个选项来调整图片大小:
 
-- Just resize - simply resizes source image to target resolution, resulting in incorrect aspect ratio
-- Crop and resize - resize source image preserving aspect ratio so that entirety of target resolution is occupied by it, and crop parts that stick out
-- Resize and fill - resize source image preserving aspect ratio so that it entirely fits target resolution, and fill empty space by rows/columns from source image
+- Just resize - 简单的把原始图片缩放到目标分辨率, 结果很可能是错误的长宽比例
+- Crop and resize - 将原始图片保留长宽比缩放，裁掉多余部分
+- Resize and fill - 将原始图片保留长宽比缩放, 将空白区域用原始图片中的行/列填充
 
-Example:
+例子如下:
 ![](images/resizing.jpg)
 
-### Sampling method selection
-Pick out of multiple sampling methods for txt2img:
+### 选择采样方法
+我们可以在text2img中选择多个采样方法中的一个:
 
 ![](images/sampling.jpg)
 
-### Seed resize
+### 种子值缩放
 This function allows you to generate images from known seeds at different resolutions. Normally, when you change resolution,
 the image changes entirely, even if you keep all other parameters including seed. With seed resizing you specify the resolution
 of the original image, and the model will very likely produce something looking very similar to it, even at a different resolution.
