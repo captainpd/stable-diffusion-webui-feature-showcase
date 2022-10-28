@@ -163,20 +163,19 @@ Outpainting 会延展初始图片，并修补空白的区域.
 ![](images/sampling.jpg)
 
 ### 种子值缩放
-This function allows you to generate images from known seeds at different resolutions. Normally, when you change resolution,
-the image changes entirely, even if you keep all other parameters including seed. With seed resizing you specify the resolution
-of the original image, and the model will very likely produce something looking very similar to it, even at a different resolution.
-In the example below, the leftmost picture is 512x512, and others are produced with exact same parameters but with larger vertical
-resolution.
+这个功能让我们可以在已知的种子值上生成不同清晰度的图片. 正常情况下当我们更改分辨率时，即使我们所有其他参数（包含种子值）都保留不变，整张图片也都会被改变。
+使用Seed resizing 我们可以规定一个原始图片的分辨率，在这个模式下我们非常有可能会得到跟原始图片非常近似的内容，即使在分辨率被调整的情况下。
+在下面的案例中，最左边的图片分辨率为512x512，其他的图片是使用相同的参数，但是垂直方向分辨率不同的情况。
 
-| Info                      | Image                         |
+
+| 内容                      | 图片                         |
 |---------------------------|-------------------------------|
 | Seed resize not enabled   | ![](images/seed-noresize.png) |
 | Seed resized from 512x512 | ![](images/seed-resize.png)   |
 
-Ancestral samplers are a little worse at this than the rest.
+Ancestral 采样器在这方面比其他的采样器表现要差一些.
 
-You can find this ferature by clicking the "Extra" checkbox near the seed.
+**使用方法**： Extra -> Seed 附近
 
 ### Variations
 A Variation strength slider and Variation seed field allow you to specify how much the existing picture should be altered to look
