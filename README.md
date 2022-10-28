@@ -100,25 +100,23 @@ Outpainting 会延展初始图片，并修补空白的区域.
 | ![](images/sd-upscale-city-original.png)  | ![](images/sd-upscale-city-realesrgan.png)  | ![](images/sd-upscale-city-esrgan-topaz-gigapixel.png)  | ![](images/sd-upscale-city-sd-upscale.png)  |
 
 ### 注意力
-Using `()` in prompt increases model's attention to enclosed words, and `[]` decreases it. You can combine
-multiple modifiers:
+圆括号() —> 增加注意力
+方括号[]-> 减少注意力，
+你可以结合多个括号使用
 
 ![](images/attention-3.jpg)
 
-### Loopback
-A checkbox for img2img allowing to automatically feed output image as input for the next batch. Equivalent to
-saving output image, and replacing input image with it. Batch count setting controls how many iterations of
-this you get.
+### 重播
+使用Loopback功能可以自动是使你的输出图片作为下一个迭代的输入，等同于先保存第一步的输出图片，作为第二步的输入图片。Batch Count设置会控制迭代多少次。
 
-Usually, when doing this, you would choose one of many images for the next iteration yourself, so the usefulness
-of this feature may be questionable, but I've managed to get some very nice outputs with it that I wasn't abble
-to get otherwise.
+在正常情况下，我们会自己选择下一次迭代的输入图片，而不是自动连续迭代，因此这个功能的实用性也许存疑，但是笔者本人已经成功使用它产出了许多非常不错的结果，要不是使用Loopback也许很难得到这样的结果。
 
-Example: (cherrypicked result)
+
+例子: (经过挑选)
 
 ![](images/loopback.jpg)
 
-Original image by Anonymous user from 4chan. Thank you, Anonymous user.
+原始图片由4chan上的匿名用户提供. 谢谢你，匿名用户.
 
 ### X/Y plot
 Creates a grid of images with varying parameters. Select which parameters should be shared by rows and columns using
