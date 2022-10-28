@@ -175,86 +175,76 @@ Outpainting 会延展初始图片，并修补空白的区域.
 
 Ancestral 采样器在这方面比其他的采样器表现要差一些.
 
-**使用方法**： Extra -> Seed 附近
+**使用方法**： img2img -> Seed 右侧 -> Extra -> Resize seed from Height/Width
 
-### Variations
-A Variation strength slider and Variation seed field allow you to specify how much the existing picture should be altered to look
-like a different one. At maximum strength you will get picture with Variation seed, at minimum -  picture with original Seed (except
-for when using ancestral samplers).
+### 变化
+Variation Strength滑动条和Variation种子值可以让我们规定现有的图片与另一个图片之间要变化多少。调整到最大我们会得到变化Seed生成的图片，调整到最小我们会得到原始Seed
+生成的图片（除了使用Ancestral采样器的时候）.
 
 ![](images/seed-variations.jpg)
 
-You can find this ferature by clicking the "Extra" checkbox near the seed.
+**使用方法**： img2img -> Seed 右侧 -> Extra -> Variation Strength
 
-### Styles
-Press "Save prompt as style" button to write your current prompt to styles.csv, the file with collection of styles. A dropbox to
-the right of the prompt will allow you to choose any style out of previously saved, and automatically append it to your input.
-To delete style, manually delete it from styles.csv and restart the program.
+### 风格
+点击 "Save prompt as style" 按钮可以让我们把目前的prompt写入 styles.csv, 这个文件会包含一系列的风格. 我们可以在Prompt右侧的一个下拉菜单选择之前保存过的风格，这会让选中的风格自动插入到我们已有Prompt的后面.
+如果想要删除风格，我们可以手动在 styles.csv 文件中删除它然后重启程序。
 
 ### Negative prompt
 
-Allows you to use another prompt of things the model should avoid when generating the picture. This works by using the
-negative prompt for unconditional conditioning in the sampling process instead of empty string.
+负面提示词可以让我们使用另一个提示词模型去避免生成与其相关的图片. 我们可以输入负面提示词来完成这个操作.
 
-| Original                      | Negative: purple                | Negative: tentacles                |
+| 原始图片                      | 负面词: purple                | 负面词: tentacles                |
 |-------------------------------|---------------------------------|------------------------------------|
 | ![](images/negative-base.png) | ![](images/negative-purple.png) | ![](images/negative-tentacles.png) |
 
 ### CLIP interrogator
 
-Originally by: https://github.com/pharmapsychotic/clip-interrogator
+原创者为: https://github.com/pharmapsychotic/clip-interrogator
 
-CLIP interrogator allows you to retrieve prompt from an image. The prompt won't allow you to reproduce this
-exact image (and sometimes it won't even be close), but it can be a good start.
+CLIP interrogator 可以让我们从一张图片中提炼出prompt. 当然提取出的prompt也不会让我们100%还原出原始图片 (有的时候甚至和原图完全不一样),但这可以作为一个好的开始.
 
 ![](images/CLIP-interrogate.png)
 
-The first time you run CLIP interrogator it will download few gigabytes of models.
+我们第一次运行 CLIP interrogator时会自动下载几百MB的模型文件.
 
-CLIP interrogator has two parts: one is a BLIP model that creates a text description from the picture.
-Other is a CLIP model that will pick few lines relevant to the picture out of a list. By default, there
-is only one list - a list of artists (from `artists.csv`). You can add more lists by doing the follwoing:
+CLIP interrogator 有两个部分: 一个是 BLIP model，它可以帮助我们生成一张图片的描述.另一个是 CLIP model，他会帮我们从列表中提取一些相关的词汇. 默认情况下只有一个列表，也就是艺术家列表(`artists.csv`). 我们可以按照如下操作创建更多列表:
 
- - create `interrogate` directory in same place as web ui
- - put text files in it with a relevant description on each line
+ - 在web ui 文件夹里创建 `interrogate` 目录
+ - 把文本文件放到里面，在每一行创建一个描述信息
 
-For example of what text files to use, see https://github.com/pharmapsychotic/clip-interrogator/tree/main/data.
-In fact, you can just take files from there and use them - just skip artists.txt because you already have a list of
-artists in `artists.csv` (or use that too, who's going to stop you). Each file adds one line of text to final description.
-If you add ".top3." to filename, for example, `flavors.top3.txt`, three most relevant lines from this file will be
-added to the prompt (other numbers also work).
+想要看如何使用这些文本文件，查阅 https://github.com/pharmapsychotic/clip-interrogator/tree/main/data.
+事实上，我们也可以直接使用这个仓库中的文本文件 - 当然要跳过 artists.txt 因为我们已经有了 `artists.csv` (电脑会报错). 每个文件会为最终的描述增加一行文字
+如果我们在文件名中插入 .top3. 例如： `flavors.top3.txt`, 那么最关联的三行会被加入到生成的prompt中(除了3其他数字也可).
 
-There are settings relevant to this feature:
- - `Interrogate: keep models in VRAM` - do not unload Interrogate models from memory after using them. For users with a lot of VRAM.
- - `Interrogate: use artists from artists.csv` - adds artist from `artists.csv` when interrogating. Can be useful disable when you have your list of artists in `interrogate` directory
- - `Interrogate: num_beams for BLIP` - parameter that affects how detailed descriptions from BLIP model are (the first part of generated prompt)
- - `Interrogate: minimum descripton length` - minimum length for BLIP model's text
- - `Interrogate: maximum descripton length` - maximum length for BLIP model's text
- - `Interrogate: maximum number of lines in text file` - interrogator will only consider this many first lines in a file. Set to 0, default is 1500, which is about as much as a 4GB videocard can handle.
+下面是相关联的设置:
+ - `Interrogate: keep models in VRAM` - 使用完毕后停止内存中的清除Interrogate models. 适用于VRAM很大的用户.
+ - `Interrogate: use artists from artists.csv` -使用 `artists.csv`中的风格. 如果想使用 `interrogate` 目录中自己的artists.txt,可以这样做
+ - `Interrogate: num_beams for BLIP` - 决定BLIP模型中的描述有多具体 (生成的prompt的第一部分)
+ - `Interrogate: minimum descripton length` - BLIP 模型文字最小长度
+ - `Interrogate: maximum descripton length` - BLIP 模型文字最大长度
+ - `Interrogate: maximum number of lines in text file` - 只会考虑一个文件夹中的前N行. 默认值为 1500, 大约是一个4GB显卡可以处理的量级。
 
 ### Interrupt
 
-Press the Interrupt button to stop current processing.
+点击 Interrupt 可以停止当前的处理.
 
-### 4GB videocard support
-Optimizations for GPUs with low VRAM. This should make it possible to generate 512x512 images on videocards with 4GB memory.
+### 4GB 显卡支持
+为了较低VRAM的GPU所做的优化。这样应该可以让只有4GB 内存的显卡能够产出512x512的图片。
 
-`--lowvram` is a reimplementation of optimization idea from by [basujindal](https://github.com/basujindal/stable-diffusion).
-Model is separated into modules, and only one module is kept in GPU memory; when another module needs to run, the previous
-is removed from GPU memory. The nature of this optimization makes the processing run slower -- about 10 times slower
-compared to normal operation on my RTX 3090.
+`--lowvram` 是一个再次优化的应用，提出者为[basujindal](https://github.com/basujindal/stable-diffusion).
+模型将会被拆分为模块，每次只有一个模块被保存在GPU内存中; 当其他模块需要被运行时，之前的模块会在GPU内存中被清除. 这个优化的本质会让处理进程变得非常慢-- 和我的 RTX 3090相比大约要慢10倍.
 
-`--medvram` is another optimization that should reduce VRAM usage significantly by not processing conditional and
-unconditional denoising in a same batch.
+`--medvram` 是另一个可以减少VRAM使用的优化，它可以大幅减少VRAM使用，通过不在一个进程中同时处理有条件与无条件的降噪.
 
-This implementation of optimization does not require any modification to original Stable Diffusion code.
+这个实施方式不需要在原始SD的代码中进行任何调整.
 
 ### Face restoration
-Lets you improve faces in pictures using either GFPGAN or CodeFormer. There is a checkbox in every tab to use face restoration,
-and also a separate tab that just allows you to use face restoration on any picture, with a slider that controls how visible
-the effect is. You can choose between the two methods in settings.
+Face Restoration可以让我们通过GFPGAN或者CodeFormer优化图片中的面部表现. 
+**使用方法**： text2img -> face restoration | img2img -> face restoration
+在设置中我们可以选择面部优化的强度和采样方法
 
-| Original                | GFPGAN                         | CodeFormer                         |
+
+| 原始图片                | GFPGAN                         | CodeFormer                         |
 |-------------------------|--------------------------------|------------------------------------|
 | ![](images/facefix.png) | ![](images/facefix-gfpgan.png) | ![](images/facefix-codeformer.png) |
 
